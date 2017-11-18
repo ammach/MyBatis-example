@@ -2,23 +2,58 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="personneMapper" >
+<mapper namespace="personneMapper">
+
 	<resultMap id="personneResult" type="personne">
 		<id property="id" column="id" />
-		<result property="nom" column="nom"/>
-		<result property="age" column="age"/>
+		<result property="nom" column="nom" />
+		<result property="age" column="age" />
 	</resultMap>
-	<select id="selectPersonne" resultType="personne" parameterType="int" resultMap="personneResult">
-	    SELECT id, nom, age from personne WHERE id = #{id}
+
+	<resultMap id="restrictedPersonneResult" type="personne">
+		<constructor>
+			<arg column="nom"  javaType="String"  />
+			<arg column="age"  javaType="int" />
+		</constructor>
+		<result property="nom" column="nom" />
+		<result property="age" column="age" />
+	</resultMap>
+
+
+
+	<select id="selectPersonnes" resultMap="restrictedPersonneResult">
+		SELECT nom, age from personne
 	</select>
-	<insert id="insertPersonne" parameterType="personne"  keyProperty="id" useGeneratedKeys="true">
-		INSERT into personne(nom,age) VALUES(#{nom}, #{age}) 	    
+	<select id="selectPersonnesOrderedByAge" resultMap="restrictedPersonneResult">
+		SELECT nom, age FROM personne ORDER BY age DESC
+	</select>
+	<select id="selectPersonnesGroupedByAge" resultMap="restrictedPersonneResult">
+		SELECT nom, age FROM personne GROUP BY age
+	</select>
+	<select id="selectPersonneById" resultType="personne" parameterType="int" resultMap="personneResult">
+		SELECT id, nom, age from personne WHERE id = #{id}
+	</select>
+	<select id="selectCountPersonnes" resultType="int">
+	SELECT count(*)FROM personne
+	</select>
+	
+	
+	<insert id="insertPersonne" parameterType="personne" keyProperty="id" useGeneratedKeys="true">
+		INSERT into
+		personne(nom,age) VALUES(#{nom}, #{age})
 	</insert>
+	<insert id="insertPersonneByNom">
+		INSERT into
+		personne(nom) VALUES(#{nom})
+	</insert>
+	
 	<update id="updatePersonne" parameterType="personne">
-		UPDATE personne SET nom=#{nom}, age =#{age} WHERE id =#{id}  	    
+		UPDATE personne SET nom=#{nom}, age =#{age} WHERE id =#{id}
 	</update>
 	<delete id="deletePersonne" parameterType="int">
-		DELETE FROM personne WHERE id =#{id}  	    
+		DELETE FROM personne WHERE id =#{id}
 	</delete>
+
+
 </mapper> 
 

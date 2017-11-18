@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+	<resultMap id="userMap" type="user">
+		<id column="id" property="id" />
+		<result column="username" property="username"></result>
+		<result column="age" property="age"></result>
+		<result column="sexe" property="sexe"></result>
+		<collection property="userTags" ofType="userTag">
+			<id column="id_tag" property="id" />
+			<association property="tag" javaType="tag">
+				<id column="id" property="id" />
+				<result column="libelle" property="libelle" />
+			</association>
+		</collection>
+	</resultMap>
+
+	<sql id="slectUsersFragment">
+		SELECT * FROM user u INNER JOIN user_tag ut ON u.id = ut.id_user INNER JOIN tag t ON ut.id_tag = t.id
+	</sql>
+
+	<select id="selectUsers" resultMap="userMap">
+		<include refid="slectUsersFragment"></include>
+	</select>
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO user(username,age,sexe) VALUES (#{username},#{age},#{sexe});
+	</insert>
+	
+	<insert id="insertUserDynamic" parameterType="user">
+		INSERT INTO user(username,age,sexe) 
+		VALUES (#{username},#{age},<if test="username=='garcon'">'h'</if>
+		                           <if test="username=='fille'">'f'</if>);
+	</insert>
+
+</mapper>

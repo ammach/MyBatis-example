@@ -5,6 +5,9 @@
 <configuration>
   <typeAliases>
      <typeAlias type="com.mybatis.Personne" alias="personne"/>
+     <typeAlias type="com.mybatis.beans.User" alias="user"/>
+     <typeAlias type="com.mybatis.beans.Tag" alias="tag"/>
+     <typeAlias type="com.mybatis.beans.UserTag" alias="userTag"/>
   </typeAliases>  
   <environments default="development">
     <environment id="development">
@@ -13,12 +16,13 @@
         <property name="driver" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/mybatis"/>
         <property name="username" value="root"/>
-        <property name="password" value="123"/>
+        <property name="password" value=""/>
       </dataSource>
     </environment>
   </environments>
   <mappers>
     <mapper resource="personneMapper.xml" />
+    <mapper resource="userMapper.xml" />
   </mappers>
 </configuration> 
 

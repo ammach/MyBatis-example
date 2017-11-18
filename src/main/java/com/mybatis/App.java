@@ -1,15 +1,27 @@
 package com.mybatis;
 
+import java.util.List;
+
+import com.mybatis.beans.User;
+import com.mybatis.services.UserService;
+
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public class App {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		PersonneService personneService = new PersonneService();
+		UserService userService=new UserService();
 
-		Personne personne = new Personne("ammach", 22);
-		personneService.save(personne);
-
+		try {
+			List<User> users = userService.selectUsers();
+			log.info(users);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		log.info("---end---");
 	}
 
 }
